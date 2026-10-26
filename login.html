@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0f8a3e">
   <title>Login | ZCMC Warehouse Inventory</title>
-  <link rel="icon" type="image/png" href="assets/logo/zcms.png">
+  <link rel="icon" type="image/png" href="assets/logo/zcmc.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,8 +13,9 @@
 </head>
 <body>
   <main class="auth">
-    <!-- Left: branding -->
-    <section class="auth__brand" aria-hidden="false">
+
+    <!-- Left: branding (desktop / large tablet only) -->
+    <section class="auth__brand">
       <div class="brand__glow brand__glow--one"></div>
       <div class="brand__glow brand__glow--two"></div>
 
@@ -35,9 +37,18 @@
 
     <!-- Right: form -->
     <section class="auth__panel">
-      <div class="card">
-        <img src="assets/logo/zcms.png" alt="" class="card__logo-mobile">
 
+      <!-- Mobile / tablet header (hidden on desktop) -->
+      <div class="hero">
+        <div class="hero__glow hero__glow--one"></div>
+        <div class="hero__glow hero__glow--two"></div>
+        <img src="assets/logo/zcmc.png" alt="Zamboanga City Medical Center seal" class="hero__logo">
+        <p class="hero__eyebrow">Department of Health</p>
+        <h1 class="hero__title">Zamboanga City Medical Center</h1>
+        <p class="hero__subtitle">Warehouse Inventory System</p>
+      </div>
+
+      <div class="card">
         <header class="card__header">
           <h2>Welcome back</h2>
           <p>Sign in to manage warehouse inventory.</p>
@@ -50,7 +61,7 @@
             <label for="email">Email</label>
             <div class="input">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z M4 7l8 6 8-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <input type="email" id="email" name="email" placeholder="you@zcmc.gov.ph" autocomplete="username" required>
+              <input type="email" id="email" name="email" placeholder="you@zcmc.gov.ph" autocomplete="username" inputmode="email" required>
             </div>
           </div>
 

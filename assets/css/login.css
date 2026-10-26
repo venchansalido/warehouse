@@ -1,5 +1,11 @@
 /* ZCMC Warehouse Inventory - Login
-   Palette taken from the ZCMC seal (green + yellow) */
+   Palette taken from the ZCMC seal (green + yellow)
+
+   Layouts
+   - Desktop / large tablet (> 900px): split screen, branding left, form right
+   - Tablet (601 - 900px):  green header + floating form card
+   - Phone (<= 600px):      green header + full-width bottom-sheet form */
+
 :root {
   --green-900: #0b5a2b;
   --green-700: #0f8a3e;
@@ -24,41 +30,44 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
-html, body { height: 100%; }
+html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
   font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   color: var(--ink);
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
 }
 
+img { max-width: 100%; }
+
 /* ---------- Layout ---------- */
 .auth {
   min-height: 100vh;
+  min-height: 100dvh;
   display: grid;
   grid-template-columns: 1.05fr 1fr;
 }
 
-/* ---------- Brand panel ---------- */
+/* ---------- Brand panel (desktop) ---------- */
 .auth__brand {
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 48px 56px;
+  padding: clamp(32px, 4vw, 48px) clamp(32px, 5vw, 56px);
   color: var(--white);
-  background:
-    linear-gradient(160deg, var(--green-700) 0%, var(--green-900) 100%);
+  background: linear-gradient(160deg, var(--green-700) 0%, var(--green-900) 100%);
 }
 
 .brand__glow {
   position: absolute;
   border-radius: 50%;
   filter: blur(60px);
-  opacity: 0.55;
   pointer-events: none;
 }
 .brand__glow--one {
@@ -71,6 +80,7 @@ body {
   width: 300px; height: 300px;
   background: var(--green-500);
   bottom: -110px; left: -90px;
+  opacity: 0.55;
 }
 
 .brand__content {
@@ -81,7 +91,7 @@ body {
 }
 
 .brand__logo {
-  width: 120px;
+  width: clamp(96px, 9vw, 120px);
   height: auto;
   display: block;
   margin-bottom: 28px;
@@ -99,7 +109,7 @@ body {
 
 .brand__title {
   margin: 0;
-  font-size: clamp(2rem, 3.2vw, 2.8rem);
+  font-size: clamp(1.9rem, 3.2vw, 2.8rem);
   line-height: 1.12;
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -162,6 +172,9 @@ body {
   padding: 32px 24px;
 }
 
+/* Mobile header is hidden on desktop */
+.hero { display: none; }
+
 .card {
   width: 100%;
   max-width: 420px;
@@ -171,8 +184,6 @@ body {
   padding: 40px 36px 32px;
   box-shadow: var(--shadow);
 }
-
-.card__logo-mobile { display: none; }
 
 .card__header h2 {
   margin: 0;
@@ -229,7 +240,7 @@ body {
   height: 48px;
   padding: 0 46px 0 44px;
   font: inherit;
-  font-size: 0.95rem;
+  font-size: 1rem;              /* 16px stops iOS zooming in on focus */
   color: var(--ink);
   background: #fbfcfb;
   border: 1.5px solid var(--line);
@@ -247,8 +258,8 @@ body {
 
 .input__toggle {
   position: absolute;
-  right: 6px;
-  width: 36px; height: 36px;
+  right: 5px;
+  width: 38px; height: 38px;
   display: grid;
   place-items: center;
   border: 0;
@@ -265,6 +276,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 16px;
   margin: 4px 0 22px;
   font-size: 0.88rem;
 }
@@ -330,23 +343,193 @@ body {
   color: var(--muted);
 }
 
-/* ---------- Responsive ---------- */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+
+/* Laptops and small desktops: just tighten spacing */
+@media (max-width: 1100px) {
+  .auth { grid-template-columns: 1fr 1fr; }
+  .brand__features { margin-top: 28px; }
+  .card { padding: 36px 28px 28px; }
+}
+
+/* Short desktop windows */
+@media (min-width: 901px) and (max-height: 700px) {
+  .brand__logo { width: 84px; margin-bottom: 18px; }
+  .brand__features { margin-top: 22px; gap: 10px; }
+  .auth__brand { padding-top: 28px; padding-bottom: 24px; }
+}
+
+/* ---------- Tablet + phone: stacked layout ---------- */
 @media (max-width: 900px) {
   .auth { grid-template-columns: 1fr; }
   .auth__brand { display: none; }
 
   .auth__panel {
-    background:
-      linear-gradient(180deg, var(--green-700) 0, var(--green-700) 220px, var(--bg) 220px);
-    align-items: start;
-    padding-top: 40px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 0;
+    align-items: stretch;      /* fixes the header shrinking to a narrow box */
+    justify-content: flex-start;
+    background: var(--bg);
   }
-  .card { padding: 32px 24px 26px; }
-  .card__logo-mobile {
+
+  /* Green header with logo + name */
+  .hero {
+    position: relative;
+    overflow: hidden;
     display: block;
-    width: 84px;
-    margin: -78px auto 16px;
-    filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.25));
+    text-align: center;
+    padding: 44px 24px 84px;
+    color: var(--white);
+    background: linear-gradient(160deg, var(--green-700) 0%, var(--green-900) 100%);
   }
-  .card__header { text-align: center; }
+  .hero > * { position: relative; z-index: 1; }
+
+  .hero__glow {
+    position: absolute !important;
+    z-index: 0 !important;
+    border-radius: 50%;
+    filter: blur(50px);
+    pointer-events: none;
+  }
+  .hero__glow--one {
+    width: 240px; height: 240px;
+    top: -90px; right: -70px;
+    background: var(--yellow-400);
+    opacity: 0.32;
+  }
+  .hero__glow--two {
+    width: 220px; height: 220px;
+    bottom: -90px; left: -70px;
+    background: var(--green-500);
+    opacity: 0.55;
+  }
+
+  .hero__logo {
+    display: block;
+    width: 92px;
+    height: auto;
+    margin: 0 auto 18px;
+    filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.3));
+    animation: rise .5s ease both;
+  }
+  .hero__eyebrow {
+    margin: 0 0 6px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--yellow-300);
+  }
+  .hero__title {
+    margin: 0 auto;
+    max-width: 18ch;
+    font-size: clamp(1.45rem, 5vw, 2rem);
+    line-height: 1.15;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .hero__subtitle {
+    display: inline-block;
+    margin: 14px 0 0;
+    padding: 5px 14px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+  }
+
+  /* Card floats over the header on tablets */
+  .card {
+    position: relative;
+    z-index: 2;
+    max-width: 480px;
+    margin: -48px auto 40px;
+    padding: 36px 32px 28px;
+    animation: rise .5s .08s ease both;
+  }
+}
+
+/* ---------- Phone: form becomes a bottom sheet ---------- */
+@media (max-width: 600px) {
+  /* Compact header: logo on the left, text on the right */
+  .hero {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 16px;
+    align-items: center;
+    text-align: left;
+    padding: calc(24px + env(safe-area-inset-top)) 20px 64px;
+  }
+  .hero__logo {
+    grid-row: 1 / span 3;
+    width: 68px;
+    margin: 0;
+  }
+  .hero__eyebrow { margin: 0 0 4px; font-size: 0.66rem; }
+  .hero__title {
+    margin: 0;
+    max-width: none;
+    font-size: 1.28rem;
+    line-height: 1.18;
+  }
+  .hero__subtitle {
+    justify-self: start;
+    margin-top: 10px;
+    padding: 4px 11px;
+    font-size: 0.74rem;
+  }
+
+  .card {
+    flex: 1;
+    width: 100%;
+    max-width: none;
+    margin: -32px 0 0;
+    border: 0;
+    border-radius: 28px 28px 0 0;
+    padding: 28px 22px calc(24px + env(safe-area-inset-bottom));
+    box-shadow: 0 -12px 30px rgba(11, 90, 43, 0.18);
+  }
+
+  .card__header h2 { font-size: 1.5rem; }
+  .card__header p { margin-bottom: 22px; }
+
+  .input input { height: 52px; }
+  .btn { height: 52px; border-radius: 14px; }
+  .row { margin-bottom: 20px; }
+  .card__help { margin-top: auto; padding-top: 20px; }
+}
+
+/* Small phones */
+@media (max-width: 360px) {
+  .hero { padding: calc(20px + env(safe-area-inset-top)) 16px 60px; column-gap: 12px; }
+  .hero__logo { width: 54px; }
+  .hero__title { font-size: 1.1rem; }
+  .hero__eyebrow { font-size: 0.6rem; letter-spacing: 0.12em; }
+  .hero__subtitle { font-size: 0.7rem; }
+  .card { padding: 26px 16px calc(20px + env(safe-area-inset-bottom)); }
+  .row { flex-direction: column; align-items: flex-start; }
+}
+
+/* Phones turned sideways: shrink the header so the form is reachable */
+@media (max-height: 520px) and (max-width: 900px) {
+  .hero { padding: 16px 20px 56px; }
+  .hero__logo { width: 52px; margin-bottom: 8px; }
+  .hero__eyebrow, .hero__subtitle { display: none; }
+  .hero__title { font-size: 1.15rem; max-width: none; }
+  .card { margin-top: -36px; max-width: 480px; }
 }

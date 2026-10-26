@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | ZCMC Warehouse Inventory</title>
+  <link rel="icon" type="image/png" href="assets/logo/zcms.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/login.css">
+</head>
+<body>
+  <main class="auth">
+    <!-- Left: branding -->
+    <section class="auth__brand" aria-hidden="false">
+      <div class="brand__glow brand__glow--one"></div>
+      <div class="brand__glow brand__glow--two"></div>
+
+      <div class="brand__content">
+        <img src="assets/logo/zcmc.png" alt="Zamboanga City Medical Center seal" class="brand__logo">
+        <p class="brand__eyebrow">Department of Health</p>
+        <h1 class="brand__title">Zamboanga City<br>Medical Center</h1>
+        <p class="brand__subtitle">Warehouse Inventory System</p>
+
+        <ul class="brand__features">
+          <li>Track stock in and stock out in real time</li>
+          <li>Monitor supplies from receiving to issuance</li>
+          <li>Works even when the connection drops</li>
+        </ul>
+      </div>
+
+      <p class="brand__footer">&copy; <span id="year"></span> ZCMC &middot; For authorized personnel only</p>
+    </section>
+
+    <!-- Right: form -->
+    <section class="auth__panel">
+      <div class="card">
+        <img src="assets/logo/zcms.png" alt="" class="card__logo-mobile">
+
+        <header class="card__header">
+          <h2>Welcome back</h2>
+          <p>Sign in to manage warehouse inventory.</p>
+        </header>
+
+        <div id="alert" class="alert" role="alert" hidden></div>
+
+        <form id="loginForm" novalidate>
+          <div class="field">
+            <label for="email">Email</label>
+            <div class="input">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z M4 7l8 6 8-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <input type="email" id="email" name="email" placeholder="you@zcmc.gov.ph" autocomplete="username" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="password">Password</label>
+            <div class="input">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password" required>
+              <button type="button" id="togglePassword" class="input__toggle" aria-label="Show password">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="row">
+            <label class="check">
+              <input type="checkbox" id="remember">
+              <span>Keep me signed in</span>
+            </label>
+            <a href="#" id="forgot" class="link">Forgot password?</a>
+          </div>
+
+          <button type="submit" id="submitBtn" class="btn">
+            <span class="btn__label">Sign in</span>
+            <span class="btn__spinner" aria-hidden="true"></span>
+          </button>
+        </form>
+
+        <p class="card__help">Need an account? Contact the warehouse administrator.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Supabase JS (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/login.js"></script>
+</body>
+</html>
